@@ -3,39 +3,29 @@ import 'dart:ui';
 /// Extension on the [Color] class to provide additional functionality.
 extension ColorExtension on Color {
   /// Returns the alpha component of the color.
-  int get alphaValue {
-    return (a * 255).toInt();
-  }
+  int get alphaValue => alpha;
 
   /// Returns the red component of the color.
-  int get redValue {
-    return (r * 255).toInt();
-  }
+  int get redValue => red;
 
   /// Returns the green component of the color.
-  int get greenValue {
-    return (g * 255).toInt();
-  }
+  int get greenValue => green;
 
   /// Returns the blue component of the color.
-  int get blueValue {
-    return (b * 255).toInt();
-  }
+  int get blueValue => blue;
 
   /// Returns the brightness of the color.
   ///
   /// The brightness is calculated as the average of the red, green, and blue components.
-  double get brightness {
-    return (r + g + b) / 3;
-  }
+  double get brightness => (red + green + blue) / 3;
 
   /// Returns the hex value of the color.
   String get hex {
-    final red = (r * 255).toInt().toRadixString(16).padLeft(2, '0');
-    final green = (g * 255).toInt().toRadixString(16).padLeft(2, '0');
-    final blue = (b * 255).toInt().toRadixString(16).padLeft(2, '0');
-    final alpha = (a * 255).toInt().toRadixString(16).padLeft(2, '0');
-    return '#$alpha$red$green$blue';
+    final redHex = red.toRadixString(16).padLeft(2, '0');
+    final greenHex = green.toRadixString(16).padLeft(2, '0');
+    final blueHex = blue.toRadixString(16).padLeft(2, '0');
+    final alphaHex = alpha.toRadixString(16).padLeft(2, '0');
+    return '#$alphaHex$redHex$greenHex$blueHex';
   }
 
   /// Darkens the color by a specified percentage.
@@ -48,15 +38,14 @@ extension ColorExtension on Color {
     assert(0 <= percent && percent <= 100);
     final f = 1 - percent / 100;
     return Color.fromARGB(
-      alphaValue,
-      (redValue * f).round(),
-      (greenValue * f).round(),
-      (blueValue * f).round(),
+      alpha,
+      (red * f).round(),
+      (green * f).round(),
+      (blue * f).round(),
     );
   }
 
-  /// Hex Color from a String to a Color object.
-
+  /// Creates a [Color] object from a hex string.
   Color fromHex(String hexString) {
     final buffer = StringBuffer();
     if (hexString.length == 6 || hexString.length == 7) buffer.write('ff');
@@ -74,27 +63,27 @@ extension ColorExtension on Color {
     assert(0 <= percent && percent <= 100);
     final p = percent / 100;
     return Color.fromARGB(
-      alphaValue,
-      redValue + ((255 - redValue) * p).round(),
-      greenValue + ((255 - greenValue) * p).round(),
-      blueValue + ((255 - blueValue) * p).round(),
+      alpha,
+      red + ((255 - red) * p).round(),
+      green + ((255 - green) * p).round(),
+      blue + ((255 - blue) * p).round(),
     );
   }
 
   /// Returns a new [Color] object with the specified alpha value.
   ///
-  /// The [alpha] parameter specifies the new alpha value, which should be between 0 and 255.
-  Color withAlpha(int alpha) {
-    assert(0 <= alpha && alpha <= 255);
-    return Color.fromARGB(alpha, redValue, greenValue, blueValue);
+  /// The [alphaValue] parameter specifies the new alpha value, which should be between 0 and 255.
+  Color withAlpha(int alphaValue) {
+    assert(0 <= alphaValue && alphaValue <= 255);
+    return Color.fromARGB(alphaValue, red, green, blue);
   }
 
   /// Returns a new [Color] object with the specified blue value.
   ///
-  /// The [blue] parameter specifies the new blue value, which should be between 0 and 255.
-  Color withBlue(int blue) {
-    assert(0 <= blue && blue <= 255);
-    return Color.fromARGB(alphaValue, redValue, greenValue, blue);
+  /// The [blueValue] parameter specifies the new blue value, which should be between 0 and 255.
+  Color withBlue(int blueValue) {
+    assert(0 <= blueValue && blueValue <= 255);
+    return Color.fromARGB(alpha, red, green, blueValue);
   }
 
   /// Returns a new [Color] object with the specified brightness value.
@@ -102,24 +91,23 @@ extension ColorExtension on Color {
   /// The [brightness] parameter specifies the new brightness value, which should be between 0 and 1.
   Color withBrightness(double brightness) {
     assert(0 <= brightness && brightness <= 1);
-    final newBrightness = brightness * 255;
-    return Color.fromARGB(alphaValue, newBrightness.toInt(),
-        newBrightness.toInt(), newBrightness.toInt());
+    final newBrightness = (brightness * 255).toInt();
+    return Color.fromARGB(alpha, newBrightness, newBrightness, newBrightness);
   }
 
   /// Returns a new [Color] object with the specified green value.
   ///
-  /// The [green] parameter specifies the new green value, which should be between 0 and 255.
-  Color withGreen(int green) {
-    assert(0 <= green && green <= 255);
-    return Color.fromARGB(alphaValue, redValue, green, blueValue);
+  /// The [greenValue] parameter specifies the new green value, which should be between 0 and 255.
+  Color withGreen(int greenValue) {
+    assert(0 <= greenValue && greenValue <= 255);
+    return Color.fromARGB(alpha, red, greenValue, blue);
   }
 
   /// Returns a new [Color] object with the specified red value.
   ///
-  /// The [red] parameter specifies the new red value, which should be between 0 and 255.
-  Color withRed(int red) {
-    assert(0 <= red && red <= 255);
-    return Color.fromARGB(alphaValue, red, greenValue, blueValue);
+  /// The [redValue] parameter specifies the new red value, which should be between 0 and 255.
+  Color withRed(int redValue) {
+    assert(0 <= redValue && redValue <= 255);
+    return Color.fromARGB(alpha, redValue, green, blue);
   }
 }
